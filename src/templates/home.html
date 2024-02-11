@@ -1,0 +1,40 @@
+<!--Need to write the test case-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../static/style.css" rel="stylesheet" />
+    <title>Home</title>
+  </head>
+  <body>
+    <h1>TODO LIST</h1>
+
+    <div>
+      Add a Todo item:
+      <form action="/add" method="POST">
+        <input type="text" name="todoitem" />
+        <input type="submit" value="Add Task" />
+      </form>
+    </div>
+
+    <div>
+      <h2>Incomplete Tasks</h2>
+      <ul>
+        {% for todo in incompleteTasks %}
+        <li>
+          {{ todo.text }}
+          <a href="{{url_for('complete',id=todo.id)}}">Mark as Complete</a>
+          <a href="{{url_for('delete',id=todo.id)}}">Delete Task</a>
+        </li>
+        {% endfor %}
+      </ul>
+      <h2>Completed Tasks</h2>
+      <ul>
+        {% for todo in completedTasks %}
+        <li>{{ todo.text }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </body>
+</html>
