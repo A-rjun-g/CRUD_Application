@@ -12,7 +12,7 @@
 
     <div>
       Add a Todo item:
-      <form action="/add" method="POST">
+      <form action="/addTaskToList" method="POST">
         <input type="text" name="todoitem" />
         <input type="submit" value="Add Task" />
       </form>
@@ -24,8 +24,8 @@
         {% for todo in incompleteTasks %}
         <li>
           {{ todo.text }}
-          <a href="{{url_for('complete',id=todo.id)}}">Mark as Complete</a>
-          <a href="{{url_for('delete',id=todo.id)}}">Delete Task</a>
+          <a href="{{url_for('completeTask',id=todo.id)}}">Mark as Complete</a>
+          <a href="{{url_for('deleteTask',id=todo.id)}}">Delete Task</a>
         </li>
         {% endfor %}
       </ul>
