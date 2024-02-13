@@ -1,5 +1,7 @@
 import pytest
-from src.todo import app, db, Todo
+from src.routesTodo import app
+from src import db
+from src.models import Todo
 
 
 @pytest.fixture
@@ -18,7 +20,7 @@ def test_home_route(client):
     assert b'<h1>TODO LIST</h1>' in response.data
 
 def test_add_route(client):
-    response = client.post('/add/', data={'todoitem': 'Test Todo'})
+    response = client.post('/addItemTotheList/', data={'todoitem': 'Test Todo'})
     assert response.status_code == 302
 
     with app.app_context():
@@ -33,14 +35,14 @@ def test_add_route(client):
         db.session.commit()
 
 def test_complete_route(client):
-    response = client.post('/add/', data={'todoitem': 'Test Todo'})
+    response = client.post('/addItemTotheList/', data={'todoitem': 'Test Todo'})
     assert response.status_code == 302
 
     with app.app_context():
         last_todo = Todo.query.order_by(Todo.id.desc()).first()
         todo_id = last_todo.id
 
-    response = client.get(f'/complete/{todo_id}')
+    response = client.get(f'/completeTask/{todo_id}')
     assert response.status_code == 302
 
     with app.app_context():
@@ -53,14 +55,13 @@ def test_complete_route(client):
         db.session.query(Todo).delete()
         db.session.commit()
 
-def test_delete_route(client):
+def test_delete_route():
     with app.app_context():
         newTodo = Todo(text='Test Todo', complete=False)
         db.session.add(newTodo)
         db.session.commit()
         todoId=newTodo.id
 
-        todos = Todo.query.all()
         todoToDelete = Todo.query.get(todoId)
         if todoToDelete:
             db.session.delete(todoToDelete)
